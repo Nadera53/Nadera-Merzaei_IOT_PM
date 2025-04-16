@@ -1050,34 +1050,68 @@ class Admin_panel:
 #print kone hameye device haee k onto hastan
 #status , off one
     def get_status_in_group(self,group_name):
+        if group_name in self.groups:
+          all_devices = self.groups[group_name]
+          for device in all_devices:
+            status = device.get_status() 
+            print(f'Device "{device.device_name}" in group "{group_name}" is "{status}".')
+        else:
+            print(f'Group "{group_name}" does not exist. Please create the group first.')
         
         '''living_room y matn print mikone mige lamp1 on , klamp2 off , lamp3 ,..'''
-        pass
+        
     
     
     #20 ta lamp wc, 30 lamp main hall, 40 ta parking
     
     
     def get_status_in_device_type(self,device_type):
+        found_devices = False
+        for group_name, devices in self.groups.items():
+          for device in devices:
+            if device.device_type == device_type:
+                status = device.get_status()
+                print(f'Device "{device.device_name}" in group "{group_name}" is "{status}".')
+                found_devices = True
+                if not found_devices:
+                   print(f'No devices found for type "{device_type}".')
         
         ''' device=lamps --> tamame lamp haro status mohem nabashe tooye living rome kojas'''
-        pass
     
     
-    def create_sensor(self) :
+    def create_sensor(self, sensor_name, sensor_type, group_name):
+    
+       if group_name in self.groups:
+           topic = f'home/{group_name}/{sensor_type}/{sensor_name}'  
+           new_sensor = Device(topic)  
+           self.add_device_to_group(group_name, new_sensor)
+           print(f'Sensor "{sensor_name}" of type "{sensor_type}" added to group "{group_name}" successfully!')
+       else:
+          print(f'Group "{group_name}" does not exist. Please create the group first.')
+
     #bar asase clASS SENSOR argument bzarid
-        pass
     
     
     #read_sensor()
-    def get_status_sensor_in_group(self,group_name):
+    def get_status_sensor_in_group(self, group_name):
+     if group_name in self.groups:
+        all_sensors = [device for device in self.groups[group_name] if 'sensor' in device.device_type]  # فیلتر کردن سنسورها
+        
+        if all_sensors:
+            for sensor in all_sensors:
+                status = sensor.get_status()
+                print(f'Sensor "{sensor.device_name}" in group "{group_name}" is "{status}".')
+        else:
+            print(f'No sensors found in group "{group_name}".')
+     else:
+        print(f'Group "{group_name}" does not exist. Please create the group first.')
+
         
         '''
         
         sensor haye yek goroh ro biad doone dooen status ro pas bde
         
         '''
-        pass
         
         
     
