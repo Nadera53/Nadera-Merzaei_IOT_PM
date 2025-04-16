@@ -1094,8 +1094,8 @@ class Admin_panel:
     
     #read_sensor()
     def get_status_sensor_in_group(self, group_name):
-     if group_name in self.groups:
-        all_sensors = [device for device in self.groups[group_name] if 'sensor' in device.device_type]  # فیلتر کردن سنسورها
+      if group_name in self.groups:
+        all_sensors = [device for device in self.groups[group_name] if 'sensor' in device.device_type] 
         
         if all_sensors:
             for sensor in all_sensors:
